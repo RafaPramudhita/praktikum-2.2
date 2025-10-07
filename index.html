@@ -61,7 +61,42 @@
     </div>
 </div>
 
+<script>
+$(document).ready(function(){
+    $("#btnGet").click(function(){
+        let lokasi = $("#inputLokasi").val();
+        if (lokasi === "") {
+            alert("Masukkan nama kota terlebih dahulu!");
+            return;
+        }
 
+        const apiKey = "5c263347edab4df499420816250710";
+        const urlapi = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${lokasi}&aqi=no`;
+
+        $.ajax({
+            url: urlapi,
+            method: "GET",
+            success: function(data) {
+                console.log(data);
+                // isi cuaca
+                $("#suhu").text(data.current.temp_c);
+                $("#kelembapan").text(data.current.humidity);
+
+                // isi lokasi
+                $("#negara").text(data.location.country);
+                $("#provinsi").text(data.location.region);
+                $("#kecamatan").text(data.location.name);
+                $("#lon").text(data.location.lon);
+                $("#lat").text(data.location.lat);
+            },
+            error: function(err) {
+                alert("Lokasi tidak ditemukan!");
+                console.log(err);
+            }
+        });
+    });
+});
+</script>
 
 </body>
 </html>
